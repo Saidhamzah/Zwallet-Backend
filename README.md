@@ -4,7 +4,7 @@ This is part of development progress of Zwallet on back end side. The developmen
 
 ## Tools
 
-* NodeJs
+* Postman
 * ExpressJs
 * API
 * MySQL
