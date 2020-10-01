@@ -4,10 +4,10 @@ This is part of development progress of Zwallet on back end side. The developmen
 
 ## Tools
 
-* Postman
-* MySQL
-* restAPI
+* NodeJs
 * ExpressJs
+* API
+* MySQL
 
 ## Table 
 

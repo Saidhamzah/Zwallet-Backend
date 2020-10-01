@@ -96,7 +96,7 @@ app.patch("/topup/:id", (req, res) => {
                 } else {
                   res.status(400).send({
                     success: false,
-                    message: "Failed update user",
+                    message: "Failed update topup",
                   });
                 }
               });
@@ -110,7 +110,7 @@ app.patch("/topup/:id", (req, res) => {
             console.log(err);
             res.status(500).send({
               success: false,
-              message: "Failed update user",
+              message: "Failed update topup",
             });
           }
         }
@@ -289,12 +289,12 @@ app.patch("/profile/:id", (req, res) => {
                 if (result.affectedRows) {
                   res.status(200).send({
                     success: true,
-                    message: `User ${id} Succesfully updated`,
+                    message: `Profile ${id} Succesfully updated`,
                   });
                 } else {
                   res.status(400).send({
                     success: false,
-                    message: "Failed update user",
+                    message: "Failed update profile",
                   });
                 }
               });
@@ -376,7 +376,7 @@ app.post("/transfer", (req, res) => {
           if (!err) {
             res.status(201).send({
               success: true,
-              message: "Success add users profile data",
+              message: "Success add transfer data",
               data: result,
             });
           } else {
@@ -512,12 +512,12 @@ app.patch("/transfer/:id", (req, res) => {
 //delete
 app.delete("/transfer/:id", (req, res) => {
   const { id } = req.params;
-  db.query(
-    `select* from transfer where id=${id}`,
-    (err,result, fields)=>{
-      if(!err){
-        if(result.length){
-          db.query(`delete from transfer where id=${id}`, (err, result, fields) => {
+  db.query(`select* from transfer where id=${id}`, (err, result, fields) => {
+    if (!err) {
+      if (result.length) {
+        db.query(
+          `delete from transfer where id=${id}`,
+          (err, result, fields) => {
             if (!err) {
               res.status(200).send({
                 success: true,
@@ -531,25 +531,22 @@ app.delete("/transfer/:id", (req, res) => {
                 data: [],
               });
             }
-          });
-        }else {
-          res.status(400).send({
-            success: false,
-            message: "id not found",
-          });
-        }
-      }else {
-        res.status(500).send({
+          }
+        );
+      } else {
+        res.status(400).send({
           success: false,
-          message: "Failed delete transfer",
+          message: "id not found",
         });
       }
+    } else {
+      res.status(500).send({
+        success: false,
+        message: "Failed delete transfer",
+      });
     }
-  )
+  });
 });
-
-
-
 
 //as user
 //transfer
@@ -575,6 +572,8 @@ app.get("/user/transfer/:id", (req, res) => {
     }
   );
 });
+
+
 app.listen(7000, () => {
   console.log("Server running on port 7000");
 });
