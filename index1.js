@@ -410,7 +410,7 @@ app.post("/transfer", (req, res) => {
 //getAll
 app.get("/transfer", (req, res) => {
   db.query(
-    `select transfer.id, sendBy, concat(profile1.firstName,' ', profile1.lastName) as sender, amountTransfer, receiver, 
+    `select transfer.*, sendBy, concat(profile1.firstName,' ', profile1.lastName) as sender,
         concat(profile2.firstName,' ', profile2.lastName) as received
         from transfer inner join profile as profile1 on transfer.sendBy= profile1.id 
         inner join profile as profile2 on transfer.receiver= profile2.id`,

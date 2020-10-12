@@ -1,11 +1,12 @@
 const router = require("express").Router();
 const userController = require("../controller/user");
+const {authentic} = require('../helper/auth')
 
 router
-    .get("/:id", userController.getAllUserById)
-    .get("/:id-", userController.getSearch)
-    .get("/all", userController.getAllUser)
-    .post("", userController.postUserData)
-    .patch("/:id", userController.patchUserById)
-    .delete("/:id", userController.deleteUserById)
+    .get("/:id", authentic, userController.getAllUserById)
+    .get("/:id-", authentic, userController.getSearch)
+    .get("/all", authentic, userController.getAllUser)
+    .post("", authentic, userController.postUserData)
+    .patch("/:id",authentic, userController.patchUserById)
+    .delete("/:id",authentic, userController.deleteUserById)
 module.exports = router;
