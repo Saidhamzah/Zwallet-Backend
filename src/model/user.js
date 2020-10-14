@@ -2,6 +2,21 @@ const db = require("../helper/db");
 // const { search } = require("../route/user");
 
 module.exports = {
+  getAllUser: function () {
+    return new Promise((resolve, reject) => {
+      db.query(
+        // `select *, concat(firstname,' ',lastName) as fullName from profile where id=${id}`,
+        `select * from profile`,
+        (err, result) => {
+          if (!err) {
+            resolve(result);
+          } else {
+            reject(new Error(err));
+          }
+        }
+      );
+    });
+  },
   getAllUserById: function (id) {
     return new Promise((resolve, reject) => {
       db.query(
@@ -22,7 +37,7 @@ module.exports = {
       db.query(
         `select concat(firstname,' ',lastName) as fullName, img, phoneNumber 
         from profile where id <> ${id} and roleId = 100 and concat(firstname,' ',lastName) 
-        like '%${search}%' order by concat(firstname,' ',lastName) asc `,
+        like '%${search}%' order by concat(firstname,' ',lastName) asc LIMIT 4`,
         (err, result) => {
           if (!err) {
             resolve(result);

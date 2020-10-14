@@ -1,10 +1,10 @@
 const router = require("express").Router();
 const transferController = require("../controller/transfer");
-
+const {authentic} = require('../Middleware/auth')
 router
-    .get("/", transferController.getAllTransfer)
-    .get("/:id", transferController.getAllTransferById)
-    .post("/:id", transferController.getAllTransferById)
-    .patch("/:id", transferController.getAllTransferById)
-    .delete("/:id", transferController.getAllTransferById)
+    .get("/",authentic, transferController.getAllTransfer)
+    .get("/:id",authentic, transferController.getAllTransferById)
+    .post("/:id",authentic, transferController.postTransfer)
+    .patch("/:id",authentic, transferController.patchTransfer)
+    .delete("/:id",authentic, transferController.deleteTransfer)
 module.exports = router;
