@@ -1,6 +1,8 @@
 const modelUser = require("../model/user");
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
+const multer = require("multer");
+const path = require("path");
 
 const validation = validationResult.withDefaults({
   formatter: (error) => {
@@ -9,6 +11,33 @@ const validation = validationResult.withDefaults({
     };
   },
 });
+
+let storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./public/images");
+  },
+  filename: function (req, file, cb) {
+    const newFileName = `${Date.now()}-${file.originalname}`;
+    cb(null, newFileName);
+  },
+});
+
+let limits = {
+  fileSize: 5 * 1024 * 1024,
+};
+
+let fileFilter = (req, file, cb) => {
+  const mime = /jpg|webp|gif|png|jpeg|svg/;
+  const extName = mime.test(path.extname(file.originalname).toLowerCase());
+  if (extName) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+let upload = multer({ storage, limits, fileFilter });
+
 module.exports = {
   getAllUserById: async function (req, res) {
     try {
@@ -109,7 +138,7 @@ module.exports = {
         const hash = bcrypt.hashSync(req.body.password, 10);
         newData = { ...newData, password: hash };
       }
-      const result = await userModel.patchUserById(id, newData);
+      const result = await modelUser.patchUserById(id, newData);
       res.status(201).send({
         message: "Success edit an user",
         rowsAffected: result.affectedRows,
@@ -132,5 +161,38 @@ module.exports = {
         message: error.message,
       });
     }
+  },
+  uploadImage: (req, res) => {
+    const uploadImage = upload.single("image");
+    const { id } = req.params;
+    uploadImage(req, res, async function (err) {
+      try {
+        const imgName = 
+         {img : `${req.file.filename}`};
+
+        if (!req.file) {
+          res.status(400).send({
+            success: false,
+            message: "File isn't an Image",
+          });
+        } else {
+          if (!err) {
+            await modelUser.uploadImage(id, imgName);
+            res.status(201).send({
+              success: true,
+              image: `${process.env.BASE_URI}/images/${req.file.filename}`,
+            });
+          } else {
+            res.status(400).send({
+              error: err,
+            });
+          }
+        }
+      } catch (error) {
+        res.status(500).send({
+          message: error.message,
+        });
+      }
+    });
   },
 };

@@ -1,5 +1,5 @@
 const authModel = require('../model/auth')
-const helper = require('../helper')
+const helper = require('../helper/FormResponse')
 const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv')
 const bcrypt = require('bcrypt')

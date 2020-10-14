@@ -16,14 +16,13 @@ const topupRoute = require("./src/route/topup");
 const transferRoute = require("./src/route/transfer");
 
 const authRoute = require("./src/route/auth");
-
+app.use(express.static('public'))
 app.use("/user", userRoute);
 app.use("/topup", topupRoute);
 app.use("/transfer", transferRoute);
 
 
 app.use("/auth", authRoute);
-
 app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${process.env.PORT}`);
 });
