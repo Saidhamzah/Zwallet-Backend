@@ -7,36 +7,38 @@ const bcrypt = require('bcrypt')
 dotenv.config()
 
 module.exports={
-    authentication: async function(request, response){
-        try{
-            const {email, password} = req.body
-            const result = await authModel.login(email)
-
-            if(result[0] !=''){
-                const token = jwt.sign({
-                    email : result[0],email,
-                    id : result[0].id,
-                    name : result[0].name
-                }, process.env.SECRET_KEY
-                )
-                bcrypt.compare(password, result[0].password, (err, result)=>{
-                    if(result){
-                        result.status(200).send({
-                            message: token
-                        })
-                    }else{
-                        res.status(401).send({
-                            message: 'Email or Password not valid'
-                        })
-                    }
-                })
-            }
-
-        }
-        catch(error){
-            res.status(500).send({
-                message: error.message
-            })
-        }
-    }
+    register: (req, res) => {
+        authModel
+          .register(req.body)
+          .then((data) => {
+            res.status(201).send({
+              success: true,
+              message: "Register Successfully",
+              data: data,
+            });
+          })
+          .catch((err) => {
+            res.send({
+                success: false,
+                message: err.message,
+              });
+          });
+      },
+      login: (req, res) => {
+        authModel
+          .login(req.body)
+          .then((data) => {
+            res.status(200).send({
+              success: true,
+              message: "Login Successfully",
+              token: data,
+            });
+          })
+          .catch((err) => {
+            res.send({
+                success: false,
+                message: err,
+              });
+          });
+      },
 }

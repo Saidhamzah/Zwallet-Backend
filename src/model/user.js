@@ -5,7 +5,8 @@ module.exports = {
   getAllUserById: function (id) {
     return new Promise((resolve, reject) => {
       db.query(
-        `select *, concat(firstname,' ',lastName) as fullName from profile where id=${id}`,
+        // `select *, concat(firstname,' ',lastName) as fullName from profile where id=${id}`,
+        `select * from profile where id=${id}`,
         (err, result) => {
           if (!err) {
             resolve(result);
