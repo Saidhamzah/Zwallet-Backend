@@ -53,7 +53,7 @@ module.exports = {
       concat(p2.firstName,' ',p2.lastName) as receiveBy from transfer 
      inner join profile as p1 on transfer.sendBy=p1.id 
      inner join profile as p2 on transfer.receiver=p2.id
-     where sendBy=${id} or receiver=${id} and DATEDIFF(CURRENT_DATE ,dateTransfer)<30 order by dateTransfer desc;`),
+     where sendBy=${id} or receiver=${id} and DATEDIFF(CURRENT_DATE ,dateTransfer)<30 order by dateTransfer desc limit 2;`),
         (err, result) => {
           if (!err) {
             resolve(result);
@@ -69,7 +69,7 @@ module.exports = {
       concat(p2.firstName,' ',p2.lastName) as receiveBy from transfer 
      inner join profile as p1 on transfer.sendBy=p1.id 
      inner join profile as p2 on transfer.receiver=p2.id
-     where sendBy=${id} or receiver=${id} and DATEDIFF(CURRENT_DATE ,dateTransfer)<8 order by dateTransfer desc;`),
+     where sendBy=${id} or receiver=${id} and DATEDIFF(CURRENT_DATE ,dateTransfer)<8 order by dateTransfer desc limit 2;`),
         (err, result) => {
           if (!err) {
             resolve(result);

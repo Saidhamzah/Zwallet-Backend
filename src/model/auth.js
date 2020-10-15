@@ -30,7 +30,7 @@ module.exports = {
       db.query(query, email, (err, data) => {
         let dataUser = data[0];
         if (!data.length) {
-          reject("Email Salah.");
+          reject("Email or Password invalid.");
         } else {
           if (!err) {
             const token = jwt.sign(
@@ -42,17 +42,17 @@ module.exports = {
             );
             bcrypt.compare(password, dataUser.password, function (err, result) {
               if (err) {
-                reject("Password Salah");
+                reject("Email or Password invalid");
               } else {
                 if (!result) {
-                  reject("Password Salah");
+                  reject("Email or Password invalid");
                 } else {
                   const sql = "SELECT * FROM profile WHERE password=?";
                   db.query(sql, dataUser.password, (err, data) => {
                     if (!err) {
                       resolve(token);
                     } else {
-                      reject("Password Salah");
+                      reject("Email or Password invalid");
                     }
                   });
                 }

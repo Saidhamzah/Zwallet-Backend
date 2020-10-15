@@ -42,11 +42,10 @@ module.exports = {
   getAllUser: async function (req, res) {
     try {
       const result = await modelUser.getAllUser();
-      const newData = result;
       if (result.length > 0) {
         res.status(200).send({
           message: `Success get all of user`,
-          data: newData,
+          data: result,
         });
       } else {
         res.status(400).send({
