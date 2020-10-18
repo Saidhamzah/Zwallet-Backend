@@ -7,7 +7,7 @@ module.exports = {
       bcrypt.genSalt(10, function (err, salt) {
         const { password } = body;
         bcrypt.hash(password, salt, function (err, hashedPassword) {
-          const newBody = { ...body, password: hashedPassword };
+          const newBody = { ...body, password: hashedPassword, roleId: 100 };
           if (err) {
             reject(err);
           }
